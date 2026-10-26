@@ -4,161 +4,785 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Mr Prado - Technology, computer evolution, Linux and tech Shorts.">
-  <title><a href="https://www.youtube.com/@Mrprado222">
-  <img src="logo.jpeg" alt="Mr Prado Logo"
-       style="width:55px;height:55px;object-fit:contain;">
-</a>| Tech Universe</title>
+
+  <title>Mr Prado | Next-Gen Technology</title>
+  <meta name="description" content="Welcome to Mr Prado! Explore AI, Linux, computer technology, tutorials and amazing tech Shorts. Watch the latest videos and subscribe.">
+  <meta name="theme-color" content="#080b14">
+
+  <link rel="icon" href="logo.jpeg" type="image/jpeg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
   <style>
-    * { box-sizing: border-box; }
-    body {
+    :root {
+      --bg: #080b14;
+      --panel: #111827;
+      --text: #f5f7ff;
+      --muted: #a7b0c4;
+      --cyan: #00e5ff;
+      --purple: #9b5cff;
+      --pink: #ff3d81;
+    }
+
+    * {
+      box-sizing: border-box;
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #080d1b;
-      color: #f4f7ff;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 85px;
+    }
+
+    body {
+      background:
+        radial-gradient(ellipse at 15% 5%, #14204a 0, transparent 35%),
+        radial-gradient(ellipse at 90% 35%, #211039 0, transparent 30%),
+        var(--bg);
+      color: var(--text);
+      font-family: Inter, Arial, sans-serif;
       line-height: 1.6;
+      overflow-x: hidden;
     }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button, a {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .container {
+      width: min(1120px, 92%);
+      margin: auto;
+    }
+
     header {
-      padding: 22px 7%;
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(8, 11, 20, 0.88);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(0, 229, 255, 0.16);
+    }
+
+    .navbar {
+      min-height: 76px;
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid #202b45;
+      justify-content: space-between;
+      gap: 20px;
     }
-    .logo { font-size: 25px; font-weight: 800; color: #63e4ff; }
-    nav a { color: white; text-decoration: none; margin-left: 18px; }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: Orbitron, sans-serif;
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    .brand img {
+      width: 48px;
+      height: 48px;
+      object-fit: cover;
+      border-radius: 13px;
+      border: 1px solid var(--cyan);
+      box-shadow: 0 0 18px #00e5ff35;
+    }
+
+    .brand span {
+      color: var(--cyan);
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    nav a:not(.nav-sub):hover {
+      color: var(--cyan);
+    }
+
+    .nav-sub {
+      background: #ff303b;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 8px;
+    }
+
     .hero {
-      text-align: center;
-      padding: 90px 20px 75px;
-      background: radial-gradient(ellipse at top, #173b70, #080d1b 70%);
+      min-height: 560px;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      align-items: center;
+      gap: 35px;
+      padding-top: 65px;
+      padding-bottom: 70px;
     }
-    .tag { color: #63e4ff; letter-spacing: 3px; font-size: 12px; }
-    h1 { font-size: clamp(42px, 9vw, 76px); line-height: 1.1; margin: 18px 0; }
-    h1 span { color: #63e4ff; }
-    .hero p { color: #c2cbe0; max-width: 580px; margin: 0 auto 28px; }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 7px 13px;
+      border: 1px solid #00e5ff65;
+      border-radius: 30px;
+      color: var(--cyan);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      background: #00e5ff0b;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-family: Orbitron, sans-serif;
+      font-size: clamp(39px, 6.5vw, 72px);
+      line-height: 1.13;
+      letter-spacing: -2px;
+      margin-bottom: 20px;
+    }
+
+    .gradient-text {
+      background: linear-gradient(90deg, var(--cyan), #8b85ff, var(--pink));
+      color: transparent;
+      background-clip: text;
+      -webkit-background-clip: text;
+    }
+
+    .hero p {
+      color: var(--muted);
+      max-width: 570px;
+      font-size: 16px;
+      margin-bottom: 28px;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 13px;
+    }
+
     .btn {
-      display: inline-block; background: #ff303b; color: white;
-      text-decoration: none; font-weight: bold; padding: 13px 22px;
-      border-radius: 9px; margin: 5px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      min-height: 48px;
+      padding: 12px 19px;
+      border-radius: 10px;
+      font-weight: 800;
+      font-size: 13px;
+      transition: 0.2s;
     }
-    .secondary { background: #17233c; border: 1px solid #34496b; }
-    section { padding: 48px 7%; }
-    h2 { font-size: 29px; }
-    .cards {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+
+    .btn:hover {
+      transform: translateY(-3px);
+    }
+
+    .btn-primary {
+      background: #ff303b;
+      color: white;
+      box-shadow: 0 7px 25px #ff303b30;
+    }
+
+    .btn-secondary {
+      border: 1px solid #ffffff30;
+      background: #ffffff08;
+    }
+
+    .hero-visual {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      min-height: 310px;
+    }
+
+    .orbit {
+      width: min(300px, 75vw);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      border: 1px solid #00e5ff55;
+      box-shadow: 0 0 65px #00e5ff12, inset 0 0 60px #9b5cff12;
+      position: relative;
+      background: radial-gradient(circle, #111a30 0, #080b14 70%);
+    }
+
+    .orbit::before,
+    .orbit::after {
+      content: "";
+      position: absolute;
+      inset: 17px;
+      border: 1px dashed #9b5cff75;
+      border-radius: 50%;
+      animation: spin 22s linear infinite;
+    }
+
+    .orbit::after {
+      inset: -14px;
+      border-color: #00e5ff40;
+      animation-direction: reverse;
+      animation-duration: 30s;
+    }
+
+    .orbit img {
+      width: 61%;
+      height: 61%;
+      border-radius: 28%;
+      object-fit: cover;
+      position: relative;
+      z-index: 1;
+      box-shadow: 0 0 40px #00e5ff30;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-bottom: 85px;
+    }
+
+    .stat {
+      text-align: center;
+      background: #ffffff06;
+      border: 1px solid #ffffff12;
+      border-radius: 14px;
+      padding: 22px 10px;
+    }
+
+    .stat strong {
+      display: block;
+      color: var(--cyan);
+      font-family: Orbitron, sans-serif;
+      font-size: 17px;
+      margin-bottom: 5px;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    section {
+      padding: 45px 0 75px;
+    }
+
+    .section-heading {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .section-heading h2 {
+      font-family: Orbitron, sans-serif;
+      font-size: clamp(25px, 4vw, 36px);
+      margin-bottom: 9px;
+    }
+
+    .section-heading p {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .topics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
       gap: 18px;
     }
-    .card {
-      background: #101a30; border: 1px solid #243452;
-      padding: 22px; border-radius: 15px;
+
+    .topic {
+      padding: 25px;
+      background: linear-gradient(145deg, #151e32, #0c101c);
+      border: 1px solid #ffffff12;
+      border-radius: 16px;
+      transition: 0.25s;
     }
-    .card .emoji { font-size: 35px; }
-    .card p { color: #bdc8dc; }
-    .card a { color: #63e4ff; text-decoration: none; font-weight: bold; }
-    .subscribe {
-      margin: 15px 7% 55px; padding: 35px 20px; text-align: center;
-      background: #101a30; border-radius: 18px;
+
+    .topic:hover {
+      transform: translateY(-5px);
+      border-color: #00e5ff70;
     }
-    footer { text-align: center; padding: 25px; color: #9aa8c2; border-top: 1px solid #202b45; }
-    @media(max-width: 480px) {
-      header { padding: 18px 5%; }
-      nav a { margin-left: 8px; font-size: 13px; }
-      section { padding: 35px 5%; }
+
+    .topic-icon {
+      font-size: 30px;
+      margin-bottom: 13px;
+    }
+
+    .topic h3 {
+      font-size: 17px;
+      margin-bottom: 8px;
+    }
+
+    .topic p {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .video-section {
+      background: linear-gradient(180deg, transparent, #10172a55, transparent);
+    }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .video-card {
+      min-width: 0;
+      background: #111827;
+      border: 1px solid #ffffff12;
+      border-radius: 14px;
+      overflow: hidden;
+      transition: 0.25s;
+    }
+
+    .video-card:hover {
+      transform: translateY(-5px);
+      border-color: #00e5ff70;
+      box-shadow: 0 12px 35px #00000035;
+    }
+
+    .thumb-wrap {
+      aspect-ratio: 16 / 9;
+      background: #192238;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .thumb-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.35s;
+    }
+
+    .video-card:hover .thumb-wrap img {
+      transform: scale(1.05);
+    }
+
+    .play-icon {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      background: #00000015;
+      font-size: 35px;
+      text-shadow: 0 2px 10px #000;
+    }
+
+    .video-info {
+      padding: 15px;
+    }
+
+    .video-info h3 {
+      font-size: 14px;
+      line-height: 1.5;
+      margin-bottom: 8px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .video-info p {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .video-card:focus-visible,
+    .btn:focus-visible {
+      outline: 2px solid var(--cyan);
+      outline-offset: 4px;
+    }
+
+    .loading {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 35px 15px;
+      color: var(--muted);
+      background: #ffffff05;
+      border-radius: 12px;
+    }
+
+    .subscribe-box {
+      text-align: center;
+      padding: 40px 22px;
+      border-radius: 20px;
+      border: 1px solid #9b5cff40;
+      background: radial-gradient(ellipse at top, #35205775, #101322 75%);
+    }
+
+    .subscribe-box h2 {
+      font-family: Orbitron, sans-serif;
+      font-size: clamp(23px, 4vw, 34px);
+      margin-bottom: 12px;
+    }
+
+    .subscribe-box p {
+      color: var(--muted);
+      margin: 0 auto 22px;
+      max-width: 540px;
+      font-size: 14px;
+    }
+
+    footer {
+      border-top: 1px solid #ffffff12;
+      padding: 25px 0;
+      color: var(--muted);
+      font-size: 12px;
+      text-align: center;
+    }
+
+    footer a {
+      color: var(--cyan);
+    }
+
+    @media (max-width: 760px) {
+      .navbar {
+        min-height: 68px;
+      }
+
+      .brand {
+        font-size: 16px;
+        gap: 8px;
+      }
+
+      .brand img {
+        width: 40px;
+        height: 40px;
+      }
+
+      nav {
+        gap: 12px;
+        font-size: 12px;
+      }
+
+      nav a:nth-child(2) {
+        display: none;
+      }
+
+      .nav-sub {
+        padding: 8px 10px;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+        text-align: center;
+        padding-top: 55px;
+        gap: 25px;
+      }
+
+      .hero p {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .actions {
+        justify-content: center;
+      }
+
+      .hero-visual {
+        min-height: 260px;
+      }
+
+      .orbit {
+        width: 225px;
+      }
+
+      .stats {
+        margin-bottom: 50px;
+        gap: 8px;
+      }
+
+      .stat {
+        padding: 16px 6px;
+      }
+
+      .stat strong {
+        font-size: 13px;
+      }
+
+      .stat span {
+        font-size: 10px;
+      }
+
+      .topics {
+        grid-template-columns: 1fr;
+      }
+
+      .video-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .video-info {
+        padding: 10px;
+      }
+
+      .video-info h3 {
+        font-size: 12px;
+      }
+    }
+
+    @media (max-width: 390px) {
+      .video-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
     }
   </style>
 </head>
+
 <body>
   <header>
-    <div class="logo">MR PRADO.</div>
-    <nav>
-      <a href="#about">About</a>
-      <a href="#videos">Videos</a>
-    </nav>
+    <div class="container navbar">
+      <a class="brand" href="#home" aria-label="Mr Prado home">
+        <img src="logo.jpeg" alt="Mr Prado logo">
+        <div>MR <span>PRADO</span></div>
+      </a>
+
+      <nav aria-label="Main navigation">
+        <a href="#home">Home</a>
+        <a href="#topics">Topics</a>
+        <a href="#videos">Videos</a>
+        <a class="nav-sub" href="https://www.youtube.com/@Mrprado222?sub_confirmation=1" target="_blank" rel="noopener noreferrer">Subscribe ↗</a>
+      </nav>
+    </div>
   </header>
 
   <main>
-    <section class="hero">
-      <div class="tag">WELCOME TO THE TECH UNIVERSE</div>
-      <h1>Explore the <span>Future.</span></h1>
-      <p>
-        Discover amazing technology, computer history,
-        Linux operating systems and exciting tech Shorts.
-      </p>
-      <a class="btn" href="https://www.youtube.com/@Mrprado222"
-         target="_blank" rel="noopener">▶ Visit My YouTube</a>
-      <a class="btn secondary" href="#videos">Explore Topics ↓</a>
+    <section class="container hero" id="home">
+      <div>
+        <div class="eyebrow">YOUR NEXT-GEN TECH HUB</div>
+
+        <h1>WELCOME TO<br><span class="gradient-text">MR PRADO</span></h1>
+
+        <p>
+          Explore the future of technology. Discover AI tools, Linux,
+          computer evolution, tech experiments and amazing YouTube Shorts
+          — all in one place.
+        </p>
+
+        <div class="actions">
+          <a class="btn btn-primary" href="#videos">▶ WATCH VIDEOS</a>
+          <a class="btn btn-secondary" href="https://www.youtube.com/@Mrprado222?sub_confirmation=1" target="_blank" rel="noopener noreferrer">🔔 SUBSCRIBE</a>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="orbit">
+          <img src="logo.jpeg" alt="Mr Prado channel logo">
+        </div>
+      </div>
     </section>
 
-    <section id="about">
-      <h2>⚡ About Mr Prado</h2>
-      <p>
-        Welcome to Mr Prado! This is a place for technology lovers.
-        Explore computers, operating systems, tech discoveries and
-        fascinating digital innovations.
-      </p>
-    </section>
-
-
-<section id="videos">
-  <h2>🔥 Latest Videos | Mr Prado</h2>
-  <p>Discover the latest technology videos from Mr Prado.</p>
-
-  <div class="mrprado-player">
-    <iframe
-      src="https://www.youtube.com/embed/videoseries?list=UURNp6__lCGleYnVt7qF3dYw"
-      title="Mr Prado Latest Videos"
-      loading="lazy"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-      referrerpolicy="strict-origin-when-cross-origin"
-      allowfullscreen>
-    </iframe>
-  </div>
-
-  <a class="mrprado-subscribe"
-     href="https://www.youtube.com/@Mrprado222?sub_confirmation=1"
-     target="_blank"
-     rel="noopener noreferrer">
-    🔔 SUBSCRIBE TO MR PRADO
-  </a>
-</section>
-
-<style>
-  .mrprado-player {
-    width: 100%;
-    max-width: 850px;
-    aspect-ratio: 16 / 9;
-    margin: 24px auto;
-  }
-
-  .mrprado-player iframe {
-    width: 100%;
-    height: 100%;
-    border: 0;
-    border-radius: 14px;
-  }
-
-  .mrprado-subscribe {
-    display: inline-block;
-    margin: 12px 0;
-    padding: 14px 22px;
-    border-radius: 9px;
-    background: #ff303b;
-    color: #ffffff;
-    font-weight: bold;
-    text-decoration: none;
-  }
-</style>
-
-    <div class="subscribe">
-      <h2>Enjoy Technology? Join Us!</h2>
-      <p>Watch our videos and be part of the Mr Prado community.</p>
-      <a class="btn" href="https://www.youtube.com/@Mrprado222"
-         target="_blank" rel="noopener">SUBSCRIBE ON YOUTUBE</a>
+    <div class="container stats">
+      <div class="stat">
+        <strong>AI & TECH</strong>
+        <span>Discover what's next</span>
+      </div>
+      <div class="stat">
+        <strong>NEW VIDEOS</strong>
+        <span>Explore the latest uploads</span>
+      </div>
+      <div class="stat">
+        <strong>JOIN US</strong>
+        <span>Be part of Mr Prado</span>
+      </div>
     </div>
+
+    <section class="container" id="topics">
+      <div class="section-heading">
+        <h2>EXPLORE <span class="gradient-text">TECH</span></h2>
+        <p>Technology, creativity and ideas for the digital future.</p>
+      </div>
+
+      <div class="topics">
+        <article class="topic">
+          <div class="topic-icon">🤖</div>
+          <h3>Artificial Intelligence</h3>
+          <p>Explore AI tools, local AI, creative technology and useful experiments.</p>
+        </article>
+
+        <article class="topic">
+          <div class="topic-icon">🐧</div>
+          <h3>Linux & Open Source</h3>
+          <p>Discover Linux distributions, gaming systems and open-source software.</p>
+        </article>
+
+        <article class="topic">
+          <div class="topic-icon">💻</div>
+          <h3>Computer Evolution</h3>
+          <p>From classic computers to modern gaming PCs and future technology.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="video-section" id="videos">
+      <div class="container">
+        <div class="section-heading">
+          <h2>LATEST <span class="gradient-text">VIDEOS</span></h2>
+          <p>Watch the latest uploads from the Mr Prado YouTube channel.</p>
+        </div>
+
+        <div class="video-grid" id="videoGrid" aria-live="polite">
+          <div class="loading">Loading latest videos... ⚡</div>
+        </div>
+
+        <div class="actions" style="justify-content:center; margin-top:30px">
+          <a class="btn btn-secondary" href="https://www.youtube.com/@Mrprado222/videos" target="_blank" rel="noopener noreferrer">VIEW ALL VIDEOS ↗</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="container">
+      <div class="subscribe-box">
+        <h2>LOVE <span class="gradient-text">TECH?</span></h2>
+        <p>
+          Enjoying the content? Visit Mr Prado on YouTube and subscribe
+          to discover more technology videos and Shorts.
+        </p>
+        <a class="btn btn-primary" href="https://www.youtube.com/@Mrprado222?sub_confirmation=1" target="_blank" rel="noopener noreferrer">🔔 SUBSCRIBE TO MR PRADO</a>
+      </div>
+    </section>
   </main>
 
   <footer>
-    © 2026 Mr Prado | Made for Technology Lovers
+    <div class="container">
+      <p>© <span id="year"></span> <strong>MR PRADO</strong> · Built for the love of technology.</p>
+      <p style="margin-top:6px"><a href="https://www.youtube.com/@Mrprado222" target="_blank" rel="noopener noreferrer">YouTube Channel ↗</a></p>
+    </div>
   </footer>
+
+  <script>
+    const CHANNEL_ID = "UCRNp6__lCGleYnVt7qF3dYw";
+    const CHANNEL_URL = "https://www.youtube.com/@Mrprado222";
+    const videoGrid = document.getElementById("videoGrid");
+
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    function escapeHTML(value) {
+      return String(value ?? "").replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      })[char]);
+    }
+
+    function showVideos(items) {
+      if (!Array.isArray(items) || items.length === 0) {
+        showFallback();
+        return;
+      }
+
+      videoGrid.innerHTML = items.slice(0, 9).map(video => {
+        const id = video.videoId || video.id;
+        if (!id) return "";
+
+        const title = escapeHTML(video.title || "Watch on Mr Prado");
+        const thumbnail =
+          `https://i.ytimg.com/vi/${encodeURIComponent(id)}/hqdefault.jpg`;
+        const url = `https://www.youtube.com/watch?v=${encodeURIComponent(id)}`;
+
+        return `
+          <a class="video-card"
+             href="${url}"
+             target="_blank"
+             rel="noopener noreferrer"
+             aria-label="${title}">
+            <div class="thumb-wrap">
+              <img src="${thumbnail}"
+                   alt="${title}"
+                   loading="lazy"
+                   onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/${encodeURIComponent(id)}/mqdefault.jpg'">
+              <div class="play-icon" aria-hidden="true">▶</div>
+            </div>
+            <div class="video-info">
+              <h3>${title}</h3>
+              <p>▶ WATCH ON YOUTUBE</p>
+            </div>
+          </a>
+        `;
+      }).filter(Boolean).join("");
+
+      if (!videoGrid.innerHTML.trim()) showFallback();
+    }
+
+    function showFallback() {
+      videoGrid.innerHTML = `
+        <div class="loading">
+          <p>Latest video cards could not load right now.</p>
+          <p style="margin-top:8px">
+            <a style="color:#00e5ff" href="${CHANNEL_URL}/videos"
+               target="_blank" rel="noopener noreferrer">
+              Watch the latest videos directly on YouTube ↗
+            </a>
+          </p>
+        </div>
+        <div class="loading">
+          <a href="${CHANNEL_URL}/shorts" target="_blank"
+             rel="noopener noreferrer" style="color:#00e5ff">
+            Explore Mr Prado Shorts ↗
+          </a>
+        </div>
+      `;
+    }
+
+    async function loadVideos() {
+      const rssURL =
+        `https://www.youtube.com/feeds/videos.xml?channel_id=${CHANNEL_ID}`;
+      const apiURL =
+        `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssURL)}`;
+
+      try {
+        const response = await fetch(apiURL);
+        if (!response.ok) throw new Error("Video feed unavailable");
+
+        const data = await response.json();
+        if (data.status !== "ok" || !Array.isArray(data.items)) {
+          throw new Error("Invalid video feed");
+        }
+
+        const videos = data.items.map(item => {
+          const match = (item.link || "").match(/[?&]v=([^&]+)/);
+          return {
+            videoId: match ? match[1] : "",
+            title: item.title || "Mr Prado video"
+          };
+        }).filter(item => item.videoId);
+
+        showVideos(videos);
+      } catch (error) {
+        showFallback();
+      }
+    }
+
+    loadVideos();
+  </script>
 </body>
 </html>
