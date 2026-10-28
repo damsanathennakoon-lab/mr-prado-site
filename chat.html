@@ -258,4 +258,172 @@
     if (m.role === 'assistant' && m.content) {
       const cp = document.createElement('button');
       cp.className = 'btn ghost mini';
-      cp.textContent = 'copy
+      cp.textContent = 'copy';
+      cp.onclick = function () {
+        navigator.clipboard.writeText(m.content);
+        cp.textContent = 'copied';
+        setTimeout(function () { cp.textContent = 'copy'; }, 1200);
+      };
+      role.appendChild(cp);
+    }
+    const b = document.createElement('div');
+    b.className = 'bubble';
+    if (m.error) { b.className = 'errbox'; b.textContent = m.error; }
+    else if (m.content) b.innerHTML = md(m.content) + (busy && last ? '<span class="cursor"></span>' : '');
+    else if (m.role === 'assistant' && busy && last) b.innerHTML = '<span class="cursor"></span>';
+    wrap.appendChild(role);
+    wrap.appendChild(b);
+    return wrap;
+  }
+
+  function updateStreaming(msg) {
+    const nodes = el.msgs.querySelectorAll('.msg');
+    const last = nodes[nodes.length - 1];
+    if (!last) return;
+    const b = last.querySelector('.bubble');
+    if (b) b.innerHTML = md(msg.content) + '<span class="cursor"></span>';
+  }
+
+  function buildPayload(stream) {
+    const p = { model: (state.settings.model || '').trim() || 'gpt-4o-mini', messages: [], stream: !!stream };
+    if (stream) p.stream_options = { include_usage: true };
+    if ((state.settings.sys || '').trim()) p.messages.push({ role: 'system', content: state.settings.sys.trim() });
+    state.history.forEach(function (m) { if (!m.error) p.messages.push({ role: m.role, content: m.content }); });
+    if (state.settings.temp !== '' && !isNaN(parseFloat(state.settings.temp))) p.temperature = parseFloat(state.settings.temp);
+    if (state.settings.maxtok) p.max_tokens = parseInt(state.settings.maxtok, 10);
+    return p;
+  }
+
+  function friendly(status, msg) {
+    if (status === 401) return 'Invalid API key (401). Check the key in Settings.';
+    if (status === 429) return 'Rate limit or no quota (429): ' + msg;
+    if (status === 404) return 'Model not found (404). Try another model name.';
+    if (status === 402) return 'Billing issue (402): ' + msg;
+    return 'HTTP ' + status + ': ' + msg;
+  }
+
+  async function request(payload) {
+    const body = JSON.parse(JSON.stringify(payload));
+    for (let attempt = 0; attempt < 3; attempt++) {
+      const res = await fetch(API + '/chat/completions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + state.settings.key.trim() },
+        body: JSON.stringify(body),
+        signal: controller ? controller.signal : undefined
+      });
+      if (res.ok) return res;
+      let msg = '';
+      try { const j = await res.json(); msg = (j.error && j.error.message) || JSON.stringify(j); }
+      catch (e) { msg = await res.text().catch(function () { return ''; }); }
+      let changed = false;
+      if (res.status === 400) {
+        if (/temperature/i.test(msg) && 'temperature' in body) { delete body.temperature; changed = true; }
+        if (/max_tokens/i.test(msg)) {
+          if ('max_tokens' in body) { body.max_completion_tokens = body.max_tokens; delete body.max_tokens; changed = true; }
+          else if ('max_completion_tokens' in body) { body.max_tokens = body.max_completion_tokens; delete body.max_completion_tokens; changed = true; }
+        }
+      }
+      if (changed) { setStatus('retrying...'); continue; }
+      throw new Error(friendly(res.status, msg));
+    }
+    throw new Error('Request failed after retries.');
+  }
+
+  async function send() {
+    const text = el.input.value.trim();
+    if (!text || busy) return;
+    el.input.value = '';
+    state.history.push({ role: 'user', content: text });
+    const reply = { role: 'assistant', content: '' };
+    state.history.push(reply);
+    renderAll();
+    await run(reply);
+  }
+
+  async function run(reply) {
+    busy = true;
+    controller = new AbortController();
+    el.send.disabled = true;
+    el.stop.classList.remove('hidden');
+    setStatus('thinking...');
+    try {
+      const res = await request(buildPayload(true));
+      setStatus('streaming...', 'ok');
+      const reader = res.body.getReader();
+      const dec = new TextDecoder();
+      let buf = '', finished = false;
+      while (!finished) {
+        const r = await reader.read();
+        if (r.done) break;
+        buf += dec.decode(r.value, { stream: true });
+        let idx;
+        while ((idx = buf.indexOf('\n\n')) >= 0) {
+          const chunk = buf.slice(0, idx);
+          buf = buf.slice(idx + 2);
+          const lines = chunk.split('\n');
+          for (let i = 0; i < lines.length; i++) {
+            const line = lines[i].trim();
+            if (!line.indexOf('data:')) continue;
+            const data = line.slice(5).trim();
+            if (data === '[DONE]') { finished = true; break; }
+            try {
+              const j = JSON.parse(data);
+              const delta = j.choices && j.choices[0] && j.choices[0].delta && j.choices[0].delta.content;
+              if (delta) { reply.content += delta; updateStreaming(reply); }
+              if (j.usage) usageTotal.tokens += j.usage.total_tokens || 0;
+            } catch (e) {}
+          }
+        }
+      }
+      if (!reply.content) reply.content = '(empty response)';
+      setStatus('ready');
+    } catch (err) {
+      if (err.name === 'AbortError') { setStatus('stopped'); if (!reply.content) state.history.pop(); }
+      else { reply.error = err.message; setStatus('error', 'err'); }
+    } finally {
+      busy = false;
+      controller = null;
+      el.send.disabled = false;
+      el.stop.classList.add('hidden');
+      save();
+      renderAll();
+    }
+  }
+
+  el.send.onclick = send;
+  el.stop.onclick = function () { if (controller) controller.abort(); };
+  el.input.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
+  });
+  el.clear.onclick = function () {
+    if (!state.history.length || confirm('Clear the conversation?')) {
+      state.history = []; usageTotal = { tokens: 0 }; save(); renderAll(); setStatus('ready');
+    }
+  };
+  el.settings.onclick = function () { el.panel.classList.toggle('hidden'); };
+  el.temp.oninput = function () { state.settings.temp = el.temp.value; el.tempval.textContent = el.temp.value; save(); };
+  el.key.oninput = function () { state.settings.key = el.key.value; save(); };
+  el.model.oninput = function () { state.settings.model = el.model.value; save(); };
+  el.sys.oninput = function () { state.settings.sys = el.sys.value; save(); };
+  el.maxtok.oninput = function () { state.settings.maxtok = el.maxtok.value; save(); };
+  el.models.onclick = async function () {
+    setStatus('loading models...');
+    try {
+      const res = await fetch(API + '/models', { headers: { 'Authorization': 'Bearer ' + state.settings.key.trim() } });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const j = await res.json();
+      const ids = (j.data || []).map(function (m) { return m.id; })
+        .filter(function (id) { return /^(gpt|o[0-9]|chatgpt)/.test(id); }).sort();
+      el.modellist.innerHTML = ids.map(function (id) { return '<option value="' + id + '"></option>'; }).join('');
+      setStatus(ids.length + ' models loaded', 'ok');
+    } catch (e) { setStatus('error', 'err'); alert('Could not load models: ' + e.message); }
+  };
+
+  load();
+  syncUI();
+  renderAll();
+  if (!state.settings.key) el.panel.classList.remove('hidden');
+})();
+</script>
+</body>
+</html>
